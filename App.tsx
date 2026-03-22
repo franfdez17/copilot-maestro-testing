@@ -1,51 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StatusBar, StyleSheet } from 'react-native';
-import { LoginScreen } from '../../src/screens/LoginScreen';
-import { RegisterScreen } from '../../src/screens/RegisterScreen';
-import { HomeScreen as DashboardScreen } from '../../src/screens/HomeScreen';
-import { COLORS } from '../../src/constants/theme';
+import { LoginScreen } from './src/screens/LoginScreen';
+import { RegisterScreen } from './src/screens/RegisterScreen';
+import { HomeScreen } from './src/screens/HomeScreen';
+import { COLORS } from './src/constants/theme';
 
 // Initial Mock Data (10 items)
 const INITIAL_DATA = Array.from({ length: 10 }, (_, i) => ({
   id: (i + 1).toString(),
   title: `Activity Item ${i + 1}`,
-  description: `This is the description for item number ${i + 1}. Reactive and testable content.`,
+  description: `This is the description for item number ${i + 1}. Realistic and testable content.`,
   isLiked: false,
 }));
 
-export default function AppInternal() {
-  const [currentScreen, setCurrentScreen] = useStateInternal('login');
+export default function App() {
+  const [currentScreen, setCurrentScreen] = useState('login');
   
   // Simulated Database State
-  const [registeredUser, setRegisteredUser] = React.useState<any>(null);
-  const [loggedInUser, setLoggedInUser] = React.useState<any>(null);
+  const [registeredUser, setRegisteredUser] = useState<any>(null); // { name, email, password }
+  const [loggedInUser, setLoggedInUser] = useState<any>(null); // { email }
 
-  // Form Field State
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  // Form Field State (temporary)
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   
   // UI Feedback State
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [errorMessage, setErrorMessage] = React.useState('');
-  const [successMessage, setSuccessMessage] = React.useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   
   // Content State
-  const [items, setItems] = React.useState(INITIAL_DATA);
-
-  // Helper for screen navigation that ensures state is handled correctly
-  function setCurrentScreenInternal(s: string) {
-    setCurrentScreen(s);
-  }
+  const [items, setItems] = useState(INITIAL_DATA);
 
   const navigateTo = (screen: string) => {
     setErrorMessage('');
     setSuccessMessage('');
+    // Protected routing logic for Home
     if (screen === 'home' && !loggedInUser) {
-      setCurrentScreenInternal('login');
+      setCurrentScreen('login');
       return;
     }
-    setCurrentScreenInternal(screen);
+    setCurrentScreen(screen);
   };
 
   const validateAuth = () => {
@@ -62,17 +58,22 @@ export default function AppInternal() {
 
   const handleLogin = () => {
     if (!validateAuth()) return;
+    
     setIsLoading(true);
     setErrorMessage('');
+    
     setTimeout(() => {
       setIsLoading(false);
+      
+      // Check against registered user
       if (!registeredUser) {
         setErrorMessage('User not found. Please register first.');
         return;
       }
+      
       if (email === registeredUser.email && password === registeredUser.password) {
         setLoggedInUser({ email: registeredUser.email });
-        setCurrentScreenInternal('home'); 
+        setCurrentScreen('home'); 
       } else {
         setErrorMessage('Incorrect email or password.');
       }
@@ -85,9 +86,13 @@ export default function AppInternal() {
       return;
     }
     if (!validateAuth()) return;
+
     setErrorMessage('');
     setSuccessMessage('Registration successful! Redirecting...');
+    
+    // Save to simulated database
     setRegisteredUser({ name, email, password });
+    
     setTimeout(() => {
       navigateTo('login');
     }, 2000);
@@ -108,7 +113,7 @@ export default function AppInternal() {
     const newItem = {
       id: newId,
       title: `Task ${items.length + 1}`,
-      description: `Added on ${new Date().toLocaleTimeString()}.`,
+      description: `Added on ${new Date().toLocaleTimeString()}. Interaction is key.`,
       isLiked: false,
     };
     setItems((prev: any) => [newItem, ...prev]);
@@ -160,7 +165,7 @@ export default function AppInternal() {
       )}
 
       {currentScreen === 'home' && loggedInUser && (
-        <DashboardScreen 
+        <HomeScreen 
           email={loggedInUser.email}
           items={items}
           logout={logout}
@@ -171,12 +176,6 @@ export default function AppInternal() {
       )}
     </View>
   );
-}
-
-// Separate state hook to ensure no re-creation of main component on each state change
-function useStateInternal(initial: string) {
-  const [s, setS] = React.useState(initial);
-  return [s, setS] as const;
 }
 
 const styles = StyleSheet.create({

@@ -2,10 +2,10 @@
   "name": "copilot-maestro-testing",
   "version": "1.0.0",
   "description": "Proof of concept using Copilot SDK to automatically add testIDs to React Native apps and generate Maestro E2E tests.",
-  "main": "index.js",
+  "main": "node_modules/expo/AppEntry.js",
   "type": "module",
   "scripts": {
-    "add-ids": "node --loader ts-node/esm scripts/add_ids_4_testing.ts",
+    "add-ids": "tsx scripts/add_ids_4_testing.ts",
     "create-tests": "node --loader ts-node/esm scripts/create_tests_cases.ts"
   },
   "keywords": [],
@@ -13,12 +13,19 @@
   "license": "ISC",
   "dependencies": {
     "@github/copilot-sdk": "^0.1.32",
+    "expo": "^55.0.8",
     "js-yaml": "^4.1.1"
   },
   "devDependencies": {
+    "@expo/vector-icons": "^15.1.1",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-native": "^0.72.8",
+    "react": "^19.2.4",
+    "react-native": "^0.84.1",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }

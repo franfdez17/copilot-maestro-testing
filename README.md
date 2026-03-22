@@ -1,35 +1,35 @@
-# Copilot Maestro Testing PoC
+# Copilot Maestro Testing
 
-This project demonstrates how to use the GitHub Copilot SDK to automate mobile testing for a React Native application.
+Proof of concept demonstrating how GitHub Copilot SDK can automate mobile testing workflows.
 
 ## Features
 
-1.  **`add_ids_4_testing.ts`**: Automatically adds `testID` attributes to interactive React Native components (TouchableOpacity, Pressable, Button, TextInput) using AI analysis.
-2.  **`create_tests_cases.ts`**: Detects existing `testID` attributes and generates valid Maestro YAML end-to-end test cases.
+- Automatically add `testID` attributes to React Native components.
+- Generate Maestro E2E test cases from React Native code.
 
 ## Installation
 
 ```bash
 npm install
-```
+Usage
 
-## Usage
+Add testing IDs to components:
 
-### 1. Add Test IDs
-Analyze the `example_screen.tsx` and add missing `testID` attributes:
+npm run add-ids
+
+Generate Maestro test cases:
+
+npm run create-tests
+
+Esto hace que tu profesor **entienda el repo en 10 segundos**.
+
+---
+
+# 4️⃣ Cuando todo funcione
+
+Sube los cambios:
+
 ```bash
-node scripts/add_ids_4_testing.ts
-```
-
-### 2. Generate Maestro Tests
-Detect `testID`s in the screen and generate a Maestro YAML test file:
-```bash
-node scripts/create_tests_cases.ts
-```
-
-## Project Structure
-
-- `scripts/`: Implementation of the Copilot SDK automation.
-- `example_screen.tsx`: A sample React Native screen used for demonstration.
-- `package.json`: Project dependencies and configuration.
-- `README.md`: Project documentation.
+git add .
+git commit -m "Copilot SDK proof of concept for Maestro mobile testing"
+git push
